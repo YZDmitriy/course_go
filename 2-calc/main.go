@@ -49,46 +49,34 @@ func main() {
 }
 
 func sum(nums []float64) float64 {
-	total := 0.0
-	for _, n := range nums {
-		total += n
-	}
-
-	if len(nums) <= 1 {
-		fmt.Println("Введите минимум два числа")
-		return 0
-	}
-
-	return total
+    if len(nums) < 2 {
+        fmt.Println("Введите минимум два числа")
+        return 0
+    }
+    total := 0.0
+    for _, n := range nums {
+        total += n
+    }
+    return total
 }
 
 func avg(nums []float64) float64 {
-	if len(nums) == 0 {
-		return 0
-	}
-
-	if len(nums) <= 1 {
-		fmt.Println("Введите минимум два числа")
-		return 0
-	}
-
-	return sum(nums) / float64(len(nums))
+    if len(nums) < 2 {
+        fmt.Println("Введите минимум два числа")
+        return 0
+    }
+    return sum(nums) / float64(len(nums))
 }
 
 func median(nums []float64) float64 {
-	if len(nums) == 0 {
-		return 0
-	}
-	sort.Float64s(nums)
-	mid := len(nums) / 2
-	if len(nums)%2 == 0 {
-		return (nums[mid-1] + nums[mid]) / 2
-	}
-
-	if len(nums) <= 1 {
-		fmt.Println("Введите минимум два числа")
-		return 0
-	}
-
-	return nums[mid]
+    if len(nums) < 2 {
+        fmt.Println("Введите минимум два числа")
+        return 0
+    }
+    sort.Float64s(nums)
+    mid := len(nums) / 2
+    if len(nums)%2 == 0 {
+        return (nums[mid-1] + nums[mid]) / 2
+    }
+    return nums[mid]
 }
