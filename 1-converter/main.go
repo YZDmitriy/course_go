@@ -59,9 +59,9 @@ func promptAmount() float64 {
     }
 }
 
-func convertCurrency(amount float64, origin, target string) float64 {
-    originRate, ok1 := rates[origin]
-    targetRate, ok2 := rates[target]
+func convertCurrency(amount float64, origin, target string, rates *map[string]float64) float64 {
+    originRate, ok1 := (*rates)[origin]
+    targetRate, ok2 := (*rates)[target]
     if !ok1 || !ok2 {
         return amount
     }
@@ -85,6 +85,6 @@ func main() {
     targetOptions := filterCurrencies(origin)
     target := promptCurrency("Enter target currency", targetOptions)
 
-    result := convertCurrency(amount, origin, target)
+    result := convertCurrency(amount, origin, target, &rates)
     fmt.Printf("%.2f %s = %.2f %s\n", amount, origin, result, target)
 }
