@@ -9,6 +9,16 @@ import (
 	"strings"
 )
 
+// Определяем тип для функций операций
+type OperationFunc func([]float64) float64
+
+// Создаем map для хранения функций операций
+var operations = map[string]OperationFunc{
+	"SUM": sum,
+	"AVG": avg,
+	"MED": median,
+}
+
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 
@@ -16,14 +26,16 @@ func main() {
 	opInput, _ := reader.ReadString('\n')
 	operation := strings.ToUpper(strings.TrimSpace(opInput))
 
-	if(operation != "AVG" && operation != "SUM" && operation != "MED") {
+	// Проверяем, существует ли операция в нашей map
+	opFunc, exists := operations[operation]
+	if !exists {
 		fmt.Println("Неизвестная операция. Используйте AVG, SUM или MED.")
 		return
 	}
 
 	fmt.Print("Введите числа через запятую: ")
 	numsInput, _ := reader.ReadString('\n')
-	numStrs := strings.Split(numsInput, ",")
+	numStrs := strings.Split(strings.TrimSpace(numsInput), ",")
 	var nums []float64
 
 	for _, s := range numStrs {
@@ -36,16 +48,9 @@ func main() {
 		nums = append(nums, n)
 	}
 
-	switch operation {
-	case "AVG":
-		fmt.Printf("AVG: %.2f\n", avg(nums))
-	case "SUM":
-		fmt.Printf("SUM: %.2f\n", sum(nums))
-	case "MED":
-		fmt.Printf("MED: %.2f\n", median(nums))
-	default:
-		fmt.Println("Неизвестная операция. Используйте AVG, SUM или MED.")
-	}
+	// Вызываем функцию из map
+	result := opFunc(nums)
+	fmt.Printf("%s: %.2f\n", operation, result)
 }
 
 func sum(nums []float64) float64 {
